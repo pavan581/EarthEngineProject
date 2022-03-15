@@ -12,7 +12,8 @@ for dist in data['features']:
 aoi_coords = aoi_data["geometry"]["coordinates"]
 aoi = ee.Geometry.Polygon(aoi_coords)
 Map.addLayer(aoi, {}, 'AOI')
-print("Area of East Godavari District :", ee.Number(aoi.area()).divide(1e6).round().getInfo(),"Sq.Kms")
+DistArea = ee.Number(aoi.area()).divide(1e6).round().getInfo()
+print("Area of East Godavari District :", DistArea,"Sq.Kms")
 
 #Define the visualization parameters.
 vizParams = {'bands': ['B4', 'B3', 'B2'], 'min': 0.0,'max': 4000}
