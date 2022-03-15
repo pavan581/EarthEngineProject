@@ -11,7 +11,8 @@ for dist in data['features']:
 
 aoi_coords = aoi_data["geometry"]["coordinates"]
 aoi = ee.Geometry.Polygon(aoi_coords)
-#Map.addLayer(aoi, {}, 'AOI')
+Map.addLayer(aoi, {}, 'AOI')
+print("Area of East Godavari District :", ee.Number(aoi.area()).divide(1e6).round().getInfo(),"Sq.Kms")
 
 #Define the visualization parameters.
 vizParams = {'bands': ['B4', 'B3', 'B2'], 'min': 0.0,'max': 4000}
@@ -21,21 +22,18 @@ ndwiParams = {'min': -1, 'max': 1, 'palette': ['red', 'green', 'blue']}
 for year in range(2018, 2022):
     for month in range(1, 13):
         image = ee.ImageCollection("COPERNICUS/S2_SR")\
-                        .filterBounds(aoi)\
-                        .filterDate(ee.Date(f'{year}-{month}-01'), ee.Date(f'{year}-{month}-28'))\
-                        .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 5))\
-                        .mean()\
-                        .clip(aoi)
-        print(ee.Image(image).get('CLOUD_COVER'))
+                    .filterBounds(aoi)\
+                    .filterDate(ee.Date(f'{year}-{month}-01'), ee.Date(f'{year}-{month}-28'))\
+                    .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 5))\
+                    .mean()\
+                    .clip(aoi)
         try:
             ndvi = image.normalizedDifference(['B8', 'B4'])
-            Map.addLayer(image.normalizedDifference(['B8', 'B4']), ndviParams, f'NDVI-{year}-{month}')
-        except Exception as e:
-            print(e, month, year, sep='--')
-    
-#ndvi = image.normalizedDifference(['B8', 'B4'])
-#ndwi = image.normalizedDifference(['B3', 'B8'])
+            ndwi = image.normalizedDifference(['B3', 'B8'])
+            
+            Map.addLayer(ndvi, ndviParams, f'NDVI-{year}-{month}')
+            Map.addLayer(ndwi, ndwiParams, f'NDWI-{year}-{month}')
+        except:
+            print(month, year)
 
-#Map.addLayer(ndvi, ndviParams, f'NDVI')
-#Map.addLayer(ndwi, ndwiParams, f'NDWI')
 print('Finish')
