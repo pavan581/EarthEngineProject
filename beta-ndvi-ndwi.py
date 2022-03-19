@@ -2,15 +2,10 @@ import ee
 import requests as req
 from ee_plugin import Map
 
-data = req.get('https://raw.githubusercontent.com/pavan581/earth-git/master/2011_Dist.json').json()
+dict_collec = ee.FeatureCollection('users/sairamg581/ap_districts')
+dict_feature = dict_collec.filter("DISTRICT == 'East Godavari'")
+aoi = dict_feature.geometry()
 
-for dist in data['features']:
-    if dist["properties"]["DISTRICT"] == 'East Godavari':
-        aoi_data = dist
-        break
-
-aoi_coords = aoi_data["geometry"]["coordinates"]
-aoi = ee.Geometry.Polygon(aoi_coords)
 Map.addLayer(aoi, {}, 'AOI')
 DistArea = ee.Number(aoi.area()).divide(1e6).round().getInfo()
 print("Area of East Godavari District :", DistArea,"Sq.Kms")
