@@ -1,2 +1,14 @@
+# Python cache
+__pycache__
+
+# Notebook checkponts
 *.ipynb_checkpoints
+
+# VS Code
+.vscode
+
+# QGIS Project
 *.qgz
+
+# Test code
+zeta_*
