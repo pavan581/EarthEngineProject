@@ -17,3 +17,14 @@
 
 # Error info
 > If ipyleaflet maps are not working in Jupyterlab try [link](https://ipywidgets.readthedocs.io/en/stable/user_install.html)
+
+# Keywords
+- Remote sensing
+- Google Earth Engine
+- QGIS
+- NDVI
+- NDWI
+- Mineral index
+- Vegetation/Deforestation
+- Groundwater
+- QGIS Python

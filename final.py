@@ -2,16 +2,18 @@ import ee
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# from ee_plugin import Map
-
-ee.Initialize()
+try:
+    ee.Initialize()
+except ee.EEException:
+    ee.Authenticate()
+    ee.Initialize()
+finally:
+    print("INFO : Earth Engine Initialized.")
 
 
 def area_calc(img):
     areaImage = img.multiply(ee.Image.pixelArea())
-    area = areaImage.reduceRegion(
-        reducer=ee.Reducer.sum(), geometry=aoi, scale=500, maxPixels=1e10
-    )
+    area = areaImage.reduceRegion(reducer=ee.Reducer.sum(), geometry=aoi, scale=500, maxPixels=1e10)
     area_cover = ee.Number(area.get("nd")).divide(1e6).round().getInfo()
     return area_cover
 
@@ -36,9 +38,7 @@ for year in range(2018, 2022):
         image = (
             ee.ImageCollection("COPERNICUS/S2_SR")
             .filterBounds(aoi)
-            .filterDate(
-                ee.Date(f"{year}-{month}-01"), ee.Date(f"{year}-{month}-28")
-            )
+            .filterDate(ee.Date(f"{year}-{month}-01"), ee.Date(f"{year}-{month}-28"))
             .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 5))
             .mean()
             .clip(aoi)
@@ -49,8 +49,6 @@ for year in range(2018, 2022):
 
             vegetation = ndvi.gt(0.45).selfMask()
             wet_land = ndwi.gt(0).selfMask()
-
-            area = area_calc(vegetation)
 
             date = "-".join([str(month), str(year)])
             veg_area = area_calc(vegetation)
@@ -63,22 +61,28 @@ for year in range(2018, 2022):
         except Exception as e:
             print(e, month, year, sep="--")
 data = pd.DataFrame(data)
+data["date"] = pd.to_datetime(data["date"])
+data = data.set_index("date")
 
-fig, axs = plt.subplots(2, 1, figsize=(15, 7))
-data["veg_area"].plot(ax=axs[0])
-axs[0].set(
-    xlabel="Timeline",
-    ylabel="Vegetation area in Sq.Km",
-    title="Vegetation Area trend",
-)
 
-data["wet_area"].plot(ax=axs[1])
-axs[1].set(
-    xlabel="Timeline",
-    ylabel="Wet land area in Sq.Km",
-    title="Wet land Area trend",
-)
-fig.tight_layout()
-plt.show()
+def plot_rtn():
+    fig, axs = plt.subplots(2, 1, figsize=(15, 7))
+    data["veg_area"].plot(ax=axs[0])
+    axs[0].set(
+        xlabel="Timeline",
+        ylabel="Vegetation area in Sq.Km",
+        title="Vegetation Area trend",
+    )
+
+    data["wet_area"].plot(ax=axs[1])
+    axs[1].set(
+        xlabel="Timeline",
+        ylabel="Wet land area in Sq.Km",
+        title="Wet land Area trend",
+    )
+    fig.tight_layout()
+    plt.savefig("static/temp-beta-fig.png")
+    print("Plot saved successfully.")
+
 
 print("Run successful.")
