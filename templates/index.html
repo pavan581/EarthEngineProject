@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Project</title>
+    <style>
+        #loading {
+            height: 500px;
+            width: 500px;
+            object-fit: contain;
+            background: url(https://cdn140.picsart.com/301568770156201.gif?to=min&r=640) no-repeat;
+        }
+    </style>
+    <script type="text/javascript">
+        function loading() {
+            document.getElementById('loading').style.visibility = 'visible';
+            document.getElementById('content').style.visibility = 'hidden';
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Timeline series chart:</h1>
+
+    <div id="loading">
+        <div class="fa-3x">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+
+    </div>
+    <div id="content">
+        <p>
+        <form action="{{ url_for('home') }}" method="post">
+            <label for="firstname">District:</label>
+            <input type="text" id="district" name="district" placeholder="district">
+            <button type="submit" onclick="loading()">Login</button>
+        </form>
+        </p>
+    </div>
+
+</body>
+
+</html>
