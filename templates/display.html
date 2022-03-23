@@ -1,11 +1,32 @@
 <!doctype html>
 <html>
 
+<head>
+    <title>Results</title>
+    <style>
+        #loading {
+            display: none;
+            text-align: center;
+            margin: 300px auto 10px;
+        }
+    </style>
+    <script type="text/javascript">
+        function loading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('content').style.display = 'none';
+        }
+    </script>
+</head>
+
 <body>
 
     <h1>Timeline series chart:</h1>
 
     <img src={{ url_for('static', filename='' +name) }}>
+    <div id="loading">
+        <img src="../static/astro.gif" height="250px" width="250px" style="margin-right: 6%;">
+        <h3 style="color: aliceblue;">Loading...</h3>
+    </div>
 
 </body>
 
