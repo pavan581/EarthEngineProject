@@ -19,7 +19,7 @@ class main:
         self.aoi = self.dict_feature.geometry()
 
         if var.debug:
-            print(f"Area of East Godavari District :{area_calc(self.aoi)} Sq.Kms")
+            print(f"Area of {var.DISTRICT} District :{area_calc(self.aoi)} Sq.Kms")
 
     def compute(self):
         for year in range(
