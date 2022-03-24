@@ -10,7 +10,7 @@ except ee.EEException:
 DISTRICT = "East Godavari"
 START_DATE = ee.Date("2017-03-28")
 END_DATE = ee.Date(str(date.today()))
-CLD_PRT = 5
+CLD_PRT = 15
 
 # Define the visualization parameters.
 vizParams = {"bands": ["B4", "B3", "B2"], "min": 0.0, "max": 255}

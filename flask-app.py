@@ -40,18 +40,7 @@ def handle_exception(e):
         "name": e.name,
         "description": e.description,
     }
-    if data["code"] == 404:
-        code = """
-            <img id="error-404" src='../static/404.gif' onerror="this.style.display='none';">
-        """
-        return render_template("error.html", code=Markup(code))
-    code = """
-        <div class="center" id="oops">
-            <i class="fa-solid fa-triangle-exclamation fa-beat-fade fa-9x" style="color: #D82148;"></i>
-            <h1>Oops!! something went wrong.</h1>
-        </div>
-    """
-    return render_template("error.html", code=Markup(code))
+    return render_template("error.html", code=data["code"], description=data["description"])
 
 
 if __name__ == "__main__":

@@ -41,7 +41,7 @@
         }
 
         .box {
-            background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.2));
+            background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
             border-radius: 5px;
             line-height: 1;
             max-width: 50%;
@@ -73,12 +73,12 @@
     <div id="content" class="box">
         <div style="color: aliceblue; padding: 30px;">
             <h1>Get analysis for a District</h1>
-            <h6 style="text-align: left; margin: 15px;">Select one from the dropdown:</h6>
+            <h6 style="text-align: left; margin: 15px;">Select one District from the dropdown:</h6>
             <form action="{{ url_for('home') }}" method="post">
                 <div class="form-group mx-sm-3 mb-2">
                     <select type="text" id="district" class="form-control" name="district">
-                        <option value="">Select one</option>
-                        <option value="East Godavari" selected>East Godavari</option>
+                        <option value="" selected>Select one</option>
+                        <option value="East Godavari">East Godavari</option>
                         <option value="Sri Potti Sriramulu Nellore">Nellore</option>
                         <option value="Bangalore">Bangalore</option>
                         <option value="Hyderabad">Hyderabad</option>
