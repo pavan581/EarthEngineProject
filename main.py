@@ -1,6 +1,6 @@
 import ee
 import variables as var
-from scripts import area_calc
+from scripts import area_calc, get_gif
 
 
 class main:
@@ -19,7 +19,8 @@ class main:
         self.aoi = self.dict_feature.geometry()
 
         if var.debug:
-            print(f"Area of {var.DISTRICT} District :{area_calc(self.aoi)} Sq.Kms")
+            var.tot_area = area_calc(self.aoi)
+            print(f"Area of {var.DISTRICT} District :{var.tot_area} Sq.Kms")
 
     def compute(self):
         for year in range(
@@ -53,6 +54,11 @@ class main:
                     var.data["veg_area"].append(veg_area)
                     var.data["wet_area"].append(wet_area)
 
+                    var.veg_imgs.append(vegetation)
+                    var.wet_imgs.append(wet_land)
                 except Exception as e:
                     if var.debug:
                         print(e, month, year, sep="--")
+
+        get_gif(var.veg_imgs, self.aoi, "green", "veg")
+        get_gif(var.wet_imgs, self.aoi, "blue", "wet")

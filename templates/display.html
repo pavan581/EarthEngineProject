@@ -8,15 +8,18 @@
             color: aliceblue;
             font-family: monospace;
         }
+
         #loading {
             display: none;
             text-align: center;
             margin: 300px auto 10px;
         }
+
         #veg {
             text-align: center;
             color: aliceblue;
         }
+
         #myVideo {
             width: 100vw;
             height: 100vh;
@@ -28,24 +31,28 @@
             bottom: 0;
             z-index: -1;
         }
+
         #head {
             text-align: left;
             color: aliceblue;
             padding-left: 100px;
             padding-top: 20px;
         }
+
         #graph {
             border-radius: 35px;
             padding: 20px;
             height: 400px;
             width: 400px;
         }
+
         #graphM {
             border-radius: 35px;
             padding: 20px;
             height: 600px;
             width: 1000px;
         }
+
         #box {
             background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.2));
             border-radius: 10px;
@@ -56,9 +63,17 @@
             text-align: left;
             padding: 20px;
         }
+
+        .center {
+            margin: 50px auto 10px;
+            width: 50%;
+            padding: 10px;
+            text-align: center;
+            color: aliceblue;
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script type="text/javascript">
         function loading() {
             document.getElementById('loading').style.display = 'block';
@@ -72,36 +87,52 @@
     <video autoplay muted loop id="myVideo">
         <source src="../static/earth-bg.mp4" type="video/mp4">
     </video>
+    <div id="content" style="color: aliceblue;">
+        <div class="center">
+            <h1>Analysis of {{ district }}</h1>
+        </div>
+        <div style="margin: 30px;">
+            <h4>Total area of {{ district }}: <u>{{ tot_area }} Sq.Kms</u></h4>
+        </div>
 
-    <div id="box" class="row justify-content-around">
-        <div class="col-5">
-            <h1 class="container" style="margin-left: 20px; color: aliceblue;">Vegetation:</h1>
-            <h5 class="container" style="margin-left: 20px; color: aliceblue;">Area Covered in 2019 is 34567 Sq.Kms</h5>
-            <div class="container">
-                <img id="graph" src="https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2016/03/fall-trees-road-1.jpg">
+        <div id="box" class="row justify-content-around">
+            <div class="col-5">
+                <h1 class="container" style="margin-left: 15px; color: aliceblue;">Vegetation:</h1>
+                <h5 class="container" style="margin-left: 15px; color: aliceblue;">
+                    Area Covered in {{ month }} of {{ year }} is {{ veg_area}} Sq.Kms</h5>
+                <div class="container">
+                    <img id="graph" src="../static/veg.gif">
+                </div>
+            </div>
+
+            <div class="col-5">
+                <h1 class="container" style="margin-right: 15px; color: aliceblue;">Wet-Land:</h1>
+                <h5 class="container" style="margin-right: 15px; color: aliceblue;">
+                    Area Covered in {{ month }} of {{ year }} is {{ wet_area}} Sq.Kms</h5>
+                <div class="container">
+                    <img id="graph" src="../static/wet.gif">
+                </div>
             </div>
         </div>
 
-        <div class="col-5">
-            <h1 class="container" style="margin-left: 20px; color: aliceblue;">Wet-Land:</h1>
-            <h5 class="container" style="margin-left: 20px; color: aliceblue;">Area Covered in 2019 is 34567 Sq.Kms</h5>
-            <div class="container">
-                <img id="graph" src="https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2016/03/fall-trees-road-1.jpg">
-            </div>
+        <h1 class="container" id="head">Timeseries analysis:</h1>
+        <div class="container" id="veg">
+            <img id="graphM" src="../static/temp-op.jpg">
+        </div>
+
+        <div class="center">
+            <form action="{{ url_for('home') }}" method="get">
+                <button type="submit" class="btn btn-primary" onclick="loading()">Return
+                    Home</button>
+            </form>
         </div>
     </div>
 
-    <h1 class="container" id="head">Timeline series chart:</h1>
-
-    <div class="container" id="veg">
-        <img id="graphM" src="https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2016/03/fall-trees-road-1.jpg">
-    </div>
-    
     <div id="loading">
         <img src="../static/astro.gif" height="250px" width="250px" style="margin-right: 6%;">
         <h3 style="color: aliceblue;">Loading...</h3>
     </div>
-    
+
 </body>
 
 </html>

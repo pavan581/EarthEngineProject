@@ -33,36 +33,37 @@ ndwiParams = {"min": -1, "max": 1, "palette": ["red", "green", "blue"]}
 
 data = {"date": [], "veg_area": [], "wet_area": []}
 
-for year in range(2018, 2022):
-    for month in range(1, 13):
-        image = (
-            ee.ImageCollection("COPERNICUS/S2_SR")
-            .filterBounds(aoi)
-            .filterDate(ee.Date(f"{year}-{month}-01"), ee.Date(f"{year}-{month}-28"))
-            .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 5))
-            .mean()
-            .clip(aoi)
-        )
-        try:
-            ndvi = image.normalizedDifference(["B8", "B4"])
-            ndwi = image.normalizedDifference(["B3", "B8"])
+for month in range(1, 13):
+    image = (
+        ee.ImageCollection("COPERNICUS/S2_SR")
+        .filterBounds(aoi)
+        .filterDate(ee.Date(f"2021-{month}-01"), ee.Date(f"2021-{month}-28"))
+        .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 5))
+        .mean()
+        .clip(aoi)
+    )
+    try:
+        ndvi = image.normalizedDifference(["B8", "B4"])
+        ndwi = image.normalizedDifference(["B3", "B8"])
 
-            vegetation = ndvi.gt(0.45).selfMask()
-            wet_land = ndwi.gt(0).selfMask()
+        vegetation = ndvi.gt(0.45).selfMask()
+        wet_land = ndwi.gt(0).selfMask()
 
-            date = "-".join([str(month), str(year)])
-            veg_area = area_calc(vegetation)
-            wet_area = area_calc(wet_land)
+        date = "-".join([str(month), str(2021)])
+        veg_area = area_calc(vegetation)
+        wet_area = area_calc(wet_land)
 
-            data["date"].append("-".join([str(month), str(year)]))
-            data["veg_area"].append(veg_area)
-            data["wet_area"].append(wet_area)
+        data["date"].append("-".join([str(month), str(2021)]))
+        data["veg_area"].append(veg_area)
+        data["wet_area"].append(wet_area)
 
-        except Exception as e:
-            print(e, month, year, sep="--")
+    except Exception as e:
+        print(e, month, 2021, sep="--")
 data = pd.DataFrame(data)
 data["date"] = pd.to_datetime(data["date"])
 data = data.set_index("date")
+
+print(data.iloc[-1])
 
 
 def plot_rtn():

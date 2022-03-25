@@ -2,6 +2,7 @@ import ee
 import pandas as pd
 import variables as var
 import matplotlib.pyplot as plt
+import requests
 
 try:
     ee.Initialize()
@@ -54,3 +55,14 @@ def data_cons():
         var.data = var.data.set_index("date")
     except Exception as e:
         print("ERROR: ", e)
+
+
+def get_gif(collec, aoi, color, fname):
+    try:
+        collec = ee.ImageCollection(collec)
+        video_args = {"dimensions": 500, "region": aoi, "crs": "EPSG:3857", "bands": ["nd"], "palette": color}
+        url = collec.getVideoThumbURL(video_args)
+        with open(f"./static/{fname}.gif", "wb") as f:
+            f.write(requests.get(url).content)
+    except:
+        return "./static/error.svg"

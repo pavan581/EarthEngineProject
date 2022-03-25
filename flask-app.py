@@ -1,7 +1,7 @@
 from flask import Flask
 import os
 
-from flask import request, render_template, redirect, url_for, Markup
+from flask import request, render_template, redirect, url_for
 from werkzeug.exceptions import HTTPException
 
 from main import main
@@ -30,7 +30,18 @@ def disp():
     obj.compute()
     data_cons()
     plot_rtn()
-    return render_template("display.html", name="temp-op.jpg")
+    dt = var.data.index[-1]
+    veg_area = var.data.iloc[-1].veg_area
+    wet_area = var.data.iloc[-1].wet_area
+    return render_template(
+        "display.html",
+        district=var.DISTRICT,
+        month=dt.month_name(),
+        year=dt.year,
+        veg_area=veg_area,
+        wet_area=wet_area,
+        tot_area=var.tot_area,
+    )
 
 
 @app.errorhandler(HTTPException)
