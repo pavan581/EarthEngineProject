@@ -4,6 +4,11 @@ import variables as var
 import matplotlib.pyplot as plt
 import requests
 
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
+
+from skforecast.ForecasterAutoreg import ForecasterAutoreg
+
 try:
     ee.Initialize()
 except ee.EEException:
@@ -76,3 +81,38 @@ def get_gif(collec, aoi, color, fname):
     except Exception as e:
         print("ERROR: ", e)
         return "./static/error.svg"
+
+
+def get_img(image):
+    url = image.select(["B4", "B3", "B2"]).getThumbURL({"min": 0, "max": 5000, "dimensions": 500})
+    with open("./static/temp-true.jpg", "wb") as f:
+        f.write(requests.get(url).content)
+
+
+def forecast(type="wet"):
+
+    steps = int(len(var.data) / 2)
+    data_train = var.data[:-steps]
+    data_test = var.data[-steps:]
+
+    col = f"{type}_area"
+
+    forecaster = ForecasterAutoreg(regressor=RandomForestRegressor(random_state=123), lags=6)
+    forecaster.fit(y=data_train[col])
+
+    predictions = forecaster.predict(steps=steps)
+    predictions.index = var.data[-steps:].index
+
+    fig, ax = plt.subplots(figsize=(9, 4))
+    data_train[col].plot(ax=ax, label="train")
+    data_test[col].plot(ax=ax, label="test")
+    predictions.plot(ax=ax, label="predictions")
+    plt.title(f"{type} Forecast")
+    plt.ylabel(f"{type} land area in Sq.Kms")
+    plt.xlabel("Timeline")
+    ax.legend()
+
+    plt.savefig(f"static/temp-{type}_fc.jpg")
+
+    error_mse = mean_squared_error(y_true=data_test[col], y_pred=predictions)
+    print(f"Test error (mse): {error_mse}")

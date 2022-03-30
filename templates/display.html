@@ -53,6 +53,13 @@
             width: 1000px;
         }
 
+        #graphA {
+            border-radius: 35px;
+            padding: 20px;
+            height: 400px;
+            width: 600px;
+        }
+
         #box {
             background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.2));
             border-radius: 10px;
@@ -93,9 +100,9 @@
         </div>
         <div style="margin: 30px; text-align: center;">
             <h4>Total area of {{ district }}: <u>{{ tot_area }} Sq.Kms</u></h4>
-            <!-- <div class="container">
-                <img id="graph" src="./zeta.shp">
-            </div> -->
+            <div class="container">
+                <img id="graph" src="../static/temp-true.jpg">
+            </div>
         </div>
 
         <div id="box" class="row justify-content-around">
@@ -118,10 +125,21 @@
             </div>
         </div>
 
-        <h1 class="container" id="head">Timeseries analysis:</h1>
+        <h1 class="center">Timeseries Analysis</h1>
         <div class="container" id="veg">
             <img id="graphM" src="../static/temp-series.jpg">
         </div>
+
+        <h1 class="center">Forecast Analysis</h1>
+        <div class="row justify-content-around">
+            <div class="col-6" id="veg">
+                <img id="graphA" src="../static/temp-veg_fc.jpg">
+            </div>
+            <div class="col-6" id="veg">
+                <img id="graphA" src="../static/temp-wet_fc.jpg">
+            </div>
+        </div>
+
 
         <div class="center">
             <form action="{{ url_for('home') }}" method="get">

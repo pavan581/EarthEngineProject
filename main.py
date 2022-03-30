@@ -1,6 +1,6 @@
 import ee
 import variables as var
-from scripts import area_calc, get_gif
+from scripts import area_calc, get_gif, get_img
 
 
 class main:
@@ -28,6 +28,8 @@ class main:
             var.END_DATE.get("year").getInfo() + 1,
         ):
             for month in range(1, 13):
+                if year == var.END_DATE.get("year").getInfo() and month > var.END_DATE.get("month").getInfo():
+                    break
                 image = (
                     ee.ImageCollection("COPERNICUS/S2_SR")
                     .filterBounds(self.aoi)
@@ -60,5 +62,6 @@ class main:
                     if var.debug:
                         print(e, month, year, sep="--")
 
+        get_img(image.clip(self.aoi))
         get_gif(var.veg_imgs, self.aoi, ["white", "green"], "veg")
         get_gif(var.wet_imgs, self.aoi, ["white", "blue"], "wet")

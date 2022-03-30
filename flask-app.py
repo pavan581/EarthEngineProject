@@ -6,7 +6,7 @@ from werkzeug.exceptions import HTTPException
 
 from main import main
 import variables as var
-from scripts import plot_rtn, data_cons
+from scripts import forecast, plot_rtn, data_cons
 
 app = Flask(__name__)
 
@@ -32,6 +32,8 @@ def disp():
     obj.compute()
     data_cons()
     plot_rtn()
+    forecast("veg")
+    forecast("wet")
     dt = var.data.index[-1]
     veg_area = var.data.iloc[-1].veg_area
     wet_area = var.data.iloc[-1].wet_area
