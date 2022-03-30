@@ -17,7 +17,7 @@ finally:
 
 dict_feature = dict_collec.filter(f"DISTRICT == '{DISTRICT}'")
 aoi = dict_feature.geometry()
-# Map.addLayer(aoi, {}, "AOI")
+Map.addLayer(aoi, {}, "AOI")
 
 DistArea = ee.Number(aoi.area()).divide(1e6).round().getInfo()
 print("Area of East Godavari District :", DistArea, "Sq.Kms")
@@ -35,7 +35,7 @@ for year in range(
             .mean()
             .clip(aoi)
         )
-        # Map.addLayer(image, vizParams, f'RGB---{year}--{month}')
+        Map.addLayer(image, vizParams, f'RGB---{year}--{month}')
 
         try:
             ndvi = image.normalizedDifference(["B8", "B4"])
@@ -48,8 +48,8 @@ for year in range(
             veg_area = area_calc(vegetation, aoi)
             wet_area = area_calc(wet_land, aoi)
 
-            # Map.addLayer(ndvi, ndviParams, f'NDVI--{year}--{month}')
-            # Map.addLayer(ndwi, ndwiParams, f'NDWI--{year}--{month}')
+            Map.addLayer(ndvi, ndviParams, f'NDVI--{year}--{month}')
+            Map.addLayer(ndwi, ndwiParams, f'NDWI--{year}--{month}')
 
             print("INFO ", date, veg_area, wet_area, sep=":")
 

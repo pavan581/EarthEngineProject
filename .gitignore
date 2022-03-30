@@ -10,5 +10,5 @@ __pycache__
 # QGIS Project
 *.qgz
 
-# Test code
-zeta_*
+# Test files
+zeta*
