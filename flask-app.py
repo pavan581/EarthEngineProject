@@ -14,9 +14,11 @@ app = Flask(__name__)
 @app.route("/home", methods=["GET", "POST"])
 def home():
     try:
-        os.remove("static/temp-op.jpg")
-    except:
-        pass
+        os.remove("static/temp-series.jpg")
+        os.remove("static/temp-veg.gif")
+        os.remove("static/temp-wet.gif")
+    except Exception as e:
+        print("ERROR: ", e)
     if request.method == "POST":
         var.DISTRICT = request.form.get("district")
         return redirect(url_for("disp", district=var.DISTRICT))

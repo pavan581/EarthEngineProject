@@ -10,7 +10,7 @@ except ee.EEException:
 DISTRICT = "East Godavari"
 START_DATE = ee.Date("2017-03-28")
 END_DATE = ee.Date(str(date.today()))
-CLD_PRT = 15
+CLD_PRT = 30
 
 tot_area = 0
 

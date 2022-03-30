@@ -60,5 +60,5 @@ class main:
                     if var.debug:
                         print(e, month, year, sep="--")
 
-        get_gif(var.veg_imgs, self.aoi, "green", "veg")
-        get_gif(var.wet_imgs, self.aoi, "blue", "wet")
+        get_gif(var.veg_imgs, self.aoi, ["white", "green"], "veg")
+        get_gif(var.wet_imgs, self.aoi, ["white", "blue"], "wet")

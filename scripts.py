@@ -40,7 +40,7 @@ def plot_rtn():
             xlabel="Timeline", ylabel="Wet land area in Sq.Km", title="Wet land Area trend", xticks=var.data.index
         )
         fig.tight_layout()
-        plt.savefig("static/temp-op.jpg")
+        plt.savefig("static/temp-series.jpg")
     except Exception as e:
         print("ERROR: ", e)
     finally:
@@ -60,9 +60,19 @@ def data_cons():
 def get_gif(collec, aoi, color, fname):
     try:
         collec = ee.ImageCollection(collec)
-        video_args = {"dimensions": 500, "region": aoi, "crs": "EPSG:3857", "bands": ["nd"], "palette": color}
+        video_args = {
+            "dimensions": 500,
+            "region": aoi,
+            "crs": "EPSG:3857",
+            "bands": ["nd"],
+            "palette": color,
+            "min": 0,
+            "max": 1,
+            "framesPerSecond": 3,
+        }
         url = collec.getVideoThumbURL(video_args)
-        with open(f"./static/{fname}.gif", "wb") as f:
+        with open(f"./static/temp-{fname}.gif", "wb") as f:
             f.write(requests.get(url).content)
-    except:
+    except Exception as e:
+        print("ERROR: ", e)
         return "./static/error.svg"
