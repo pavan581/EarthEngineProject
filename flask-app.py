@@ -1,5 +1,6 @@
 from flask import Flask
 import os
+import glob
 
 from flask import request, render_template, redirect, url_for
 from werkzeug.exceptions import HTTPException
@@ -14,9 +15,8 @@ app = Flask(__name__)
 @app.route("/home", methods=["GET", "POST"])
 def home():
     try:
-        os.remove("static/temp-series.jpg")
-        os.remove("static/temp-veg.gif")
-        os.remove("static/temp-wet.gif")
+        for file in glob.glob("static/temp-*"):
+            os.remove(file)
     except Exception as e:
         print("ERROR: ", e)
     if request.method == "POST":
