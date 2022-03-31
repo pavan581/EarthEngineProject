@@ -100,7 +100,9 @@ def forecast(type="wet"):
     forecaster = ForecasterAutoreg(regressor=RandomForestRegressor(random_state=123), lags=6)
     forecaster.fit(y=data_train[col])
 
-    predictions = forecaster.predict(steps=steps)
+    predictions = forecaster.predict(steps=steps+3)
+    pred = tuple(predictions[-3:])
+    predictions = predictions[:-3]
     predictions.index = var.data[-steps:].index
 
     fig, ax = plt.subplots(figsize=(9, 4))
@@ -116,3 +118,5 @@ def forecast(type="wet"):
 
     error_mse = mean_squared_error(y_true=data_test[col], y_pred=predictions)
     print(f"Test error (mse): {error_mse}")
+
+    return pred

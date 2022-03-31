@@ -32,8 +32,8 @@ def disp():
     obj.compute()
     data_cons()
     plot_rtn()
-    forecast("veg")
-    forecast("wet")
+    veg_pred = forecast("veg")
+    wet_pred = forecast("wet")
     dt = var.data.index[-1]
     veg_area = var.data.iloc[-1].veg_area
     wet_area = var.data.iloc[-1].wet_area
@@ -45,6 +45,8 @@ def disp():
         veg_area=veg_area,
         wet_area=wet_area,
         tot_area=var.tot_area,
+        veg_pred=", ".join(str(p) for p in veg_pred),
+        wet_pred=", ".join(str(p) for p in wet_pred),
     )
 
 
