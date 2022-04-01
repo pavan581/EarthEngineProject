@@ -17,6 +17,10 @@ def home():
     try:
         for file in glob.glob("static/temp-*"):
             os.remove(file)
+
+        var.data = {"date": [], "veg_area": [], "wet_area": []}
+        var.veg_imgs = []
+        var.wet_imgs = []
     except Exception as e:
         print("ERROR: ", e)
     if request.method == "POST":

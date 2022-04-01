@@ -23,6 +23,12 @@ class main:
             print(f"Area of {var.DISTRICT} District :{var.tot_area} Sq.Kms")
 
     def compute(self):
+        img_col = (
+            ee.ImageCollection("COPERNICUS/S2_SR")
+            .filterBounds(self.aoi)
+            .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", var.CLD_PRT))
+        )
+
         for year in range(
             var.START_DATE.get("year").getInfo(),
             var.END_DATE.get("year").getInfo() + 1,
@@ -31,13 +37,10 @@ class main:
                 if year == var.END_DATE.get("year").getInfo() and month >= var.END_DATE.get("month").getInfo():
                     break
                 image = (
-                    ee.ImageCollection("COPERNICUS/S2_SR")
-                    .filterBounds(self.aoi)
-                    .filterDate(
+                    img_col.filterDate(
                         ee.Date(f"{year}-{month}-01"),
                         ee.Date(f"{year}-{month}-28"),
                     )
-                    .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", var.CLD_PRT))
                     .mean()
                     .clip(self.aoi)
                 )
