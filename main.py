@@ -28,7 +28,7 @@ class main:
             var.END_DATE.get("year").getInfo() + 1,
         ):
             for month in range(1, 13):
-                if year == var.END_DATE.get("year").getInfo() and month > var.END_DATE.get("month").getInfo():
+                if year == var.END_DATE.get("year").getInfo() and month >= var.END_DATE.get("month").getInfo():
                     break
                 image = (
                     ee.ImageCollection("COPERNICUS/S2_SR")
